@@ -14,7 +14,7 @@ import {db} from '../../../lib/firebase-config'
 // import {storage} from '../../../lib/firebase_config'
 import { collection, addDoc, query, where, getDocs, doc, getDoc  } from "firebase/firestore";
 
-function page() {
+function Page() {
     const [userDriverData, setUserDriverData] = useState(null);
     // const reduxUid = useSelector(state => state.currentuser.uid);
 
@@ -98,4 +98,4 @@ function page() {
   )
 }
 
-export default page;
+export default Page;
