@@ -64,11 +64,11 @@ function Page() {
                 <MdAccountBalanceWallet className='text-[32px] text-[rgb(94,18,18)]'/>
             </div>
             <div className='w-full h-auto flex flex-col gap-2 px-2 py-2'>
-                <p className='text-[24px] text-[#F54E4E] font-bold'>Active Advert</p>
+                <p className='text-[24px] text-[#F54E4E] font-bold'>{`Active Advert`}</p>
                 <div className='w-full h-auto bg-[#FAC213] bg-opacity-20 py-6 px-4 flex rounded-[10px]'>
                     <div className='basis-[60%] flex flex-col gap-4'>
-                        <p className='font-bold text-[18px]'>Pepsi Cola. Co</p>
-                        <p className='text-[16px]'>AGS-941</p>
+                        <p className='font-bold text-[18px]'>{`Pepsi Cola. Co`}</p>
+                        <p className='text-[16px]'>{`AGS-941`}</p>
                     </div>
                     <div className='basis-[40%] flex justify-center items-center'>
                         <Image
@@ -79,17 +79,17 @@ function Page() {
             </div>
             <div className='w-full h-auto px-2 flex flex-col py-2 gap-2'>
                 <div className='w-full h-auto bg-[#F54E4E] p-4 rounded-[15px] flex flex-col'>
-                    <p className='text-[white] font-[600] text-[20px]'>Let's Start</p>
-                    <p className='text-[white] font-[200] text-[18px]'>Earn while you roam on your every day commute.</p>
+                    <p className='text-[white] font-[600] text-[20px]'>{`Let's Start`}</p>
+                    <p className='text-[white] font-[200] text-[18px]'>{`Earn while you roam on your every day commute.`}</p>
                 </div>  
                 <div className='w-full h-auto bg-[#5E1212] p-4 rounded-[15px] flex flex-col'>
-                    <p className='text-[white] font-[600] text-[20px]'>HotSpots</p>
-                    <p className='text-[white] font-[200] text-[18px]'>Roam through Hotspots to maximize your earnings.</p>
+                    <p className='text-[white] font-[600] text-[20px]'>{`HotSpots`}</p>
+                    <p className='text-[white] font-[200] text-[18px]'>{`Roam through Hotspots to maximize your earnings.`}</p>
                 </div>  
                 <Link href={'/Marketplace'}>                
                     <div className='w-full h-auto bg-[#5E1212] p-4 rounded-[15px] flex flex-col'>
-                        <p className='text-[white] font-[600] text-[20px]'>Go to MarketPlace</p>
-                        <p className='text-[white] font-[200] text-[18px]'>Want to find a campaign that fits your choice?</p>
+                        <p className='text-[white] font-[600] text-[20px]'>{`Go to MarketPlace`}</p>
+                        <p className='text-[white] font-[200] text-[18px]'>{`Want to find a campaign that fits your choice?`}</p>
                     </div>  
                 </Link>
             </div>
