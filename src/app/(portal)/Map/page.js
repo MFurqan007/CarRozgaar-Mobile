@@ -23,7 +23,7 @@ const proximityThreshold = 0.05; // in degrees, roughly 50 meters
 const MapComponent = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyC62CM06c2XbTIoMj_kLKDfSfW8ySWcMS4",
+    googleMapsApiKey: `${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`,
     libraries: ['places']
   });
 
