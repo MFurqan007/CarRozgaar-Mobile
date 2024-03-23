@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react'
 import Image from "next/image";
 import Link from 'next/link';
-// import { useRouter} from 'next/navigation';
+import { useRouter} from 'next/navigation';
 import Logo from '../../../assets/Logo.svg'
 
 import {auth} from '../../../lib/firebase-config'
@@ -13,7 +13,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Page() {
 
-  // const router = useRouter();
+  const router = useRouter();
   // const dispatch = useDispatch();
 
   // const reduxUid = useSelector(state => state.currentuser.uid);
