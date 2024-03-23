@@ -10,7 +10,7 @@ import {db} from '../../../lib/firebase-config'
 // import {storage} from '../../../lib/firebase_config'
 import { collection, addDoc, query, where, getDocs, doc, getDoc  } from "firebase/firestore";
 
-export default function page() {
+export default function Page() {
     const [campaigns, setCampaigns] = useState([]);
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function page() {
         <div className='w-full h-auto p-2'>
             {campaigns.map(item => (
                 <Link href={`/Marketplace/${item.id}`}>            
-                    <MarketplaceCard data={item}/>
+                    <MarketplaceCard data={item} key={index}/>
                 </Link>
             ))}
         </div>

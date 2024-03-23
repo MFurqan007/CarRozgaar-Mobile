@@ -23,7 +23,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { userChange } from '../../../redux/Features/CurrentUser/currentUser';
 
 
-export default function page() {
+export default function Page() {
     // const dispatch = useDispatch();
     const router = useRouter();
 

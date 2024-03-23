@@ -11,7 +11,7 @@ import {db} from '../../../../lib/firebase-config'
 // import {storage} from '../../../lib/firebase_config'
 import { collection, addDoc, query, where, getDocs, doc, getDoc, serverTimestamp, updateDoc, arrayUnion  } from "firebase/firestore";
 
-export default function page() {
+export default function Page() {
     const params = useParams()
     console.log("Params: ",params)
     const [isClicked, setIsClicked] = useState(false);
