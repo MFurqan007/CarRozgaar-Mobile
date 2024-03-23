@@ -38,9 +38,9 @@ export default function Page() {
             
         </div> */}
         <div className='w-full h-auto p-2'>
-            {campaigns.map(item => (
-                <Link href={`/Marketplace/${item.id}`}>            
-                    <MarketplaceCard data={item} key={index}/>
+            {campaigns.map((item, index) => (
+                <Link href={`/Marketplace/${item.id}`} key={index}>            
+                    <MarketplaceCard data={item}/>
                 </Link>
             ))}
         </div>
