@@ -400,6 +400,7 @@ const MapComponent = () => {
     libraries: ['places']
   });
 
+  const [startPosition, setStartPosition] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [path, setPath] = useState([]);
   const [startAddress, setStartAddress] = useState('');
@@ -424,27 +425,51 @@ const MapComponent = () => {
     });
   };
 
-  // Start tracking
-  const startTracking = () => {
+  const setStart = () => {
     if (navigator.geolocation) {
-      const id = navigator.geolocation.watchPosition(async (position) => {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const startPos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setStartPosition(startPos);
+        setCurrentPosition(startPos); // Initially, current position is the same as start position
+
+        // Optionally, convert start position to address
+        const address = await reverseGeocode(startPos);
+        setStartAddress(address);
+      }, (error) => {
+        console.error("Error Getting Start Position", error);
+      }, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      });
+    }
+    startTracking();
+  };
+
+  // Function to start tracking movement
+  const startTracking = () => {
+    if (navigator.geolocation && startPosition) { // Ensure tracking starts only if start position is set
+      const id = navigator.geolocation.watchPosition((position) => {
         const newPos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        if (path.length === 0) {
-          const address = await reverseGeocode(newPos);
-          setStartAddress(address);
-        }
-        setPath(prevPath => [...prevPath, newPos]);
+        setCurrentPosition(newPos);
+        setPath(prevPath => [...prevPath, newPos]); // Update path with new positions
       }, (error) => {
-        console.error(error);
+        console.error("Error While Tracking", error);
       }, {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
       });
+
       setWatchId(id);
+    } else {
+      console.log("Start position must be set before tracking.");
     }
   };
 
@@ -497,7 +522,7 @@ const MapComponent = () => {
           </>
         )}
       </GoogleMap>
-      <button onClick={startTracking}>Start</button>
+      <button  onClick={setStart}>Start</button>
       <button onClick={stopTracking}>Stop</button>
       <div>
         <p>Start: {startAddress}</p>
