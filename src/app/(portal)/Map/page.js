@@ -406,6 +406,8 @@ const MapComponent = () => {
   const [startAddress, setStartAddress] = useState('');
   const [endAddress, setEndAddress] = useState('');
   const [watchId, setWatchId] = useState(null);
+  const [showSubmit, setShowSubmit] = useState(false);
+
 
   // Convert coordinates to a place name
   const reverseGeocode = async (location) => {
@@ -491,11 +493,50 @@ const MapComponent = () => {
         const address = await reverseGeocode(path[path.length - 1]);
         setEndAddress(address);
       }
+      setShowSubmit(true); 
     }
   };
 
-  // Get current position once on component mount
-  useEffect(() => {
+  const handleSubmit = () => {
+    if (!startPosition || !currentPosition) {
+      alert("Start or end position is missing.");
+      return;
+    }
+  
+    const service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [startPosition],
+        destinations: [currentPosition],
+        travelMode: 'DRIVING',
+      },
+      (response, status) => {
+        if (status === 'OK') {
+          const results = response.rows[0].elements[0];
+          const distance = results.distance.text;
+          const duration = results.duration.text;
+  
+          alert(`Distance: ${distance}, Time: ${duration}, Start: ${startAddress}, End: ${endAddress}`);
+  
+          // Reset state here
+          resetState();
+        } else {
+          console.error('Distance Matrix request failed due to ' + status);
+        }
+      }
+    );
+  };
+  
+  const resetState = () => {
+    setStartPosition(null);
+    setCurrentPosition(null);
+    setPath([]);
+    setShowSubmit(false);
+    // Re-fetch the current location and set it as the center of the map
+    getCurrentLocation();
+  };
+
+  const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         setCurrentPosition({
@@ -510,8 +551,18 @@ const MapComponent = () => {
         maximumAge: 0 // Maximum age of a cached location that is acceptable to return (in milliseconds)
       });
     }
-    
+  };
+  // Get current position once on component mount
+  useEffect(() => {
+    getCurrentLocation()
   }, []);
+
+  window.addEventListener('beforeunload', function (e) {
+    // Cancel the event
+    e.preventDefault();
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+  });
 
   return isLoaded ? (
     <div>
@@ -535,6 +586,7 @@ const MapComponent = () => {
         <button className='btn bg-red-300' onClick={setStart}>Start</button>
         <button className='btn bg-blue-300' onClick={stopTracking}>Stop</button>
       </div>
+      {showSubmit && <button onClick={handleSubmit} className='btn btn-wide mt-4'>Submit</button>}
       <div>
         <p>Start: {startAddress}</p>
         <p>End: {endAddress}</p>
