@@ -446,32 +446,41 @@ const MapComponent = () => {
         maximumAge: 0
       });
     }
-    startTracking();
   };
 
-  // Function to start tracking movement
-  const startTracking = () => {
-    if (navigator.geolocation && startPosition) { // Ensure tracking starts only if start position is set
-      const id = navigator.geolocation.watchPosition((position) => {
-        const newPos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        setCurrentPosition(newPos);
-        setPath(prevPath => [...prevPath, newPos]); // Update path with new positions
-      }, (error) => {
-        console.error("Error While Tracking", error);
-      }, {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      });
-
-      setWatchId(id);
-    } else {
-      console.log("Start position must be set before tracking.");
+  useEffect(() => {
+    const startTracking = () => {
+      if (navigator.geolocation && startPosition && watchId === null) {
+        const id = navigator.geolocation.watchPosition((position) => {
+          const newPos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setCurrentPosition(newPos);
+          setPath(prevPath => [...prevPath, newPos]);
+        }, (error) => {
+          console.error("Error While Tracking", error);
+        }, {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        });
+  
+        setWatchId(id); // Save watchId to state to manage tracking status
+      }
+    };
+  
+    if (startPosition) {
+      startTracking();
     }
-  };
+  
+    // Cleanup function to stop tracking when component unmounts or before restarting
+    // return () => {
+    //   if (watchId !== null) {
+    //     navigator.geolocation.clearWatch(watchId);
+    //   }
+    // };
+  }, [startPosition]); // 
 
   // Stop tracking
   const stopTracking = async () => {
@@ -522,8 +531,10 @@ const MapComponent = () => {
           </>
         )}
       </GoogleMap>
-      <button  onClick={setStart}>Start</button>
-      <button onClick={stopTracking}>Stop</button>
+      <div className='py-2 w-full border-2 border-black px-4 flex justify-between'>
+        <button className='btn bg-red-300' onClick={setStart}>Start</button>
+        <button className='btn bg-blue-300' onClick={stopTracking}>Stop</button>
+      </div>
       <div>
         <p>Start: {startAddress}</p>
         <p>End: {endAddress}</p>
