@@ -8,7 +8,12 @@ export default function UploadVid({setVid}) {
   // Start the video stream
   const startVideo = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const constraints = {
+            video: {
+              facingMode: "environment" // Request the back camera
+            }
+          };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       setStream(stream);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
