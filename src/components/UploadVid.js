@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function UploadVid({Vid}) {
+export default function UploadVid({close}) {
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -29,7 +29,8 @@ export default function UploadVid({Vid}) {
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
       setIsStreaming(false);
-      Vid(false); 
+      console.log("Close")
+      close(); 
     }
   };
 

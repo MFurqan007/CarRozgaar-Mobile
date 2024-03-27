@@ -52,8 +52,10 @@ function Page() {
     
         fetchUserDriver();
       }, []);
-
-
+      
+      const closeVideo = () => {
+        setVid(false); // This should hide the UploadVid component
+      };
   return (
         <div className='w-full flex flex-col gap-6'>
             
@@ -94,7 +96,7 @@ function Page() {
                             <p className='text-[white] font-[200] text-[18px]'>{`Upload Video to access functionality`}</p>
                         </div>
                         {vid &&                     
-                            <UploadVid Vid={setVid}/>
+                            <UploadVid close={closeVideo}/>
                         }
                     </>                 
                 }
