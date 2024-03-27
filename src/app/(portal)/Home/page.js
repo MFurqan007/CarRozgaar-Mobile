@@ -7,6 +7,7 @@ import PepsiLogo from '../../../assets/PepsiLogo.png'
 import { MdAccountBalanceWallet } from "react-icons/md";
 import Link from 'next/link';
 
+import UploadVid from '@/components/UploadVid';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -16,6 +17,8 @@ import { collection, addDoc, query, where, getDocs, doc, getDoc  } from "firebas
 
 function Page() {
     const [userDriverData, setUserDriverData] = useState(null);
+    const [userUploadVid, setUserUploadVid] = useState(true);
+    const [vid, setVid] = useState(false);
     // const reduxUid = useSelector(state => state.currentuser.uid);
 
     // console.log("Home Redux: ", reduxUid)
@@ -49,6 +52,8 @@ function Page() {
     
         fetchUserDriver();
       }, []);
+
+
   return (
         <div className='w-full flex flex-col gap-6'>
             
@@ -78,6 +83,21 @@ function Page() {
                 </div>
             </div>
             <div className='w-full h-auto px-2 flex flex-col py-2 gap-2'>
+                {userUploadVid &&
+                    <>
+                    
+                        <div 
+                            className='w-full h-auto bg-[#cccc32] p-4 rounded-[15px] flex flex-col'
+                            onClick={()=>{setVid(true)}}
+                        >
+                            <p className='text-[white] font-[600] text-[20px]'>{`Upload Video`}</p>
+                            <p className='text-[white] font-[200] text-[18px]'>{`Upload Video to access functionality`}</p>
+                        </div>
+                        {vid &&                     
+                            <UploadVid setVid={setVid}/>
+                        }
+                    </>                 
+                }
                 <div className='w-full h-auto bg-[#F54E4E] p-4 rounded-[15px] flex flex-col'>
                     <p className='text-[white] font-[600] text-[20px]'>{`Let's Start`}</p>
                     <p className='text-[white] font-[200] text-[18px]'>{`Earn while you roam on your every day commute.`}</p>
