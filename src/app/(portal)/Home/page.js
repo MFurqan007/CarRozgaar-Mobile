@@ -94,7 +94,7 @@ function Page() {
                             <p className='text-[white] font-[200] text-[18px]'>{`Upload Video to access functionality`}</p>
                         </div>
                         {vid &&                     
-                            <UploadVid setVid={setVid}/>
+                            <UploadVid Vid={setVid}/>
                         }
                     </>                 
                 }
