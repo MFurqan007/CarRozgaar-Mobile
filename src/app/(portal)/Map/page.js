@@ -551,10 +551,14 @@ const MapComponent = () => {
     }
   };
   const calculateRevenue = (distance, time, passedHotspot) => {
+    const distanceKilometers = parseFloat(distance.match(/[\d\.]+/)[0]);
+    const durationMinutes = parseFloat(time.match(/[\d\.]+/)[0]);
+    console.log(distanceKilometers, durationMinutes)
     const baseRatePerKm = 1; // Base rate per kilometer
     const timeRatePerMinute = 0.1; // Rate per minute of travel time
     let bonusAmount = 0; // Bonus amount for passing through hotspot
-    let revenue = distance * baseRatePerKm + time * timeRatePerMinute;
+    let revenue = distanceKilometers * baseRatePerKm + durationMinutes * timeRatePerMinute;
+    console.log("Revenue: ", revenue)
     if (passedHotspot) {
       bonusAmount = 5.0;
       revenue += bonusAmount;
@@ -595,10 +599,10 @@ const MapComponent = () => {
               passedHotspot = true;
             }
           });
-
+          console.log("Hotspot: ", passedHotspot)
           const revenue = calculateRevenue(distance, duration, passedHotspot);
 
-          alert(`Distance: ${results.distance.text}, Time: ${results.duration.text}, Start: ${startAddress}, End: ${endAddress}, Revenue: ${revenue}`);
+          alert(`Distance: ${distance}, Time: ${results.duration.text}, Start: ${startAddress}, End: ${endAddress}, Revenue: ${revenue}`);
   
           // Reset state here
           resetState();
