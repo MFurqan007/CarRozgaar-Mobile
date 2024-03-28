@@ -393,7 +393,7 @@ const center = {
   lng: 10
 };
 
-const locations = ["F10 Markaz, Islamabad", "G9 Markaz, Islamabad", "F7 Markaz, Islamabad"];
+const locations = ["Pha Flats Street 97 g-11/3, Islamabad","F10 Markaz, Islamabad", "G9 Markaz, Islamabad", "F7 Markaz, Islamabad"];
 
 const MapComponent = () => {
   const { isLoaded } = useJsApiLoader({
@@ -401,6 +401,22 @@ const MapComponent = () => {
     googleMapsApiKey: `${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}`,
     libraries: ['places']
   });
+
+  const youAreHereIcon = {
+    url: 'https://maps.gstatic.com/mapfiles/ms2/micons/blue.png', // Blue marker
+  };
+
+  const startIcon = {
+    url: 'https://maps.gstatic.com/mapfiles/ms2/micons/green.png', // Green marker
+  };
+
+  const endIcon = {
+    url: 'https://maps.gstatic.com/mapfiles/ms2/micons/red.png', // Red marker
+  };
+
+  const locationIcon = {
+    url: 'https://maps.gstatic.com/mapfiles/ms2/micons/purple.png', // Yellow marker
+  };
 
   const [startPosition, setStartPosition] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -412,32 +428,39 @@ const MapComponent = () => {
   const [showSubmit, setShowSubmit] = useState(false);
 
   const geocodeLocations = async () => {
+    if (!window.google) return; // Check if Google Maps API is loaded
     const geocoder = new window.google.maps.Geocoder();
     const newMarkers = [];
-
+  
     for (const location of locations) {
-      try {
-        const { results } = await new Promise((resolve, reject) => {
-          geocoder.geocode({ address: location }, (results, status) => {
-            if (status === 'OK') {
-              resolve(results);
-            } else {
-              reject('Geocoder failed due to: ' + status);
-            }
-          });
-        });
-
-        if (results[0]) {
-          const { location } = results[0].geometry;
-          newMarkers.push({ lat: location.lat(), lng: location.lng(), label: results[0].formatted_address });
+      geocoder.geocode({ address: location }, (results, status) => {
+        if (status === window.google.maps.GeocoderStatus.OK) {
+          if (results[0]) {
+            const { location } = results[0].geometry;
+            newMarkers.push({
+              lat: location.lat(),
+              lng: location.lng(),
+              label: results[0].formatted_address, // Corrected label assignment
+            });
+            // Update the state inside the callback
+            setHotspotMarkers((currentMarkers) => [
+              ...currentMarkers,
+              {
+                lat: location.lat(),
+                lng: location.lng(),
+                label: results[0].formatted_address,
+              },
+            ]);
+          } else {
+            console.error('No results found for:', location);
+          }
+        } else {
+          console.error('Geocoder failed due to:', status);
         }
-      } catch (error) {
-        console.error('Geocoding error:', error);
-      }
+      });
     }
-
-    setHotspotMarkers(newMarkers);
   };
+  
 
 
   // Convert coordinates to a place name
@@ -527,6 +550,25 @@ const MapComponent = () => {
       setShowSubmit(true); 
     }
   };
+  const calculateRevenue = (distance, time, passedHotspot) => {
+    const baseRatePerKm = 1; // Base rate per kilometer
+    const timeRatePerMinute = 0.1; // Rate per minute of travel time
+    let bonusAmount = 0; // Bonus amount for passing through hotspot
+    let revenue = distance * baseRatePerKm + time * timeRatePerMinute;
+    if (passedHotspot) {
+      bonusAmount = 5.0;
+      revenue += bonusAmount;
+    }
+    return revenue;
+  };
+
+  const isWithinRadius = (path, marker, radius) => {
+    const hotspotLatLng = new google.maps.LatLng(marker.lat, marker.lng);
+    return path.some(point => {
+      const pointLatLng = new google.maps.LatLng(point.lat, point.lng);
+      return google.maps.geometry.spherical.computeDistanceBetween(pointLatLng, hotspotLatLng) < radius;
+    });
+  };
 
   const handleSubmit = () => {
     if (!startPosition || !currentPosition) {
@@ -547,7 +589,16 @@ const MapComponent = () => {
           const distance = results.distance.text;
           const duration = results.duration.text;
   
-          alert(`Distance: ${distance}, Time: ${duration}, Start: ${startAddress}, End: ${endAddress}`);
+          let passedHotspot = false;
+          hotspotmarkers.forEach((marker) => {
+            if (isWithinRadius(path, marker, 500)) {
+              passedHotspot = true;
+            }
+          });
+
+          const revenue = calculateRevenue(distance, duration, passedHotspot);
+
+          alert(`Distance: ${results.distance.text}, Time: ${results.duration.text}, Start: ${startAddress}, End: ${endAddress}, Revenue: ${revenue}`);
   
           // Reset state here
           resetState();
@@ -586,8 +637,13 @@ const MapComponent = () => {
   // Get current position once on component mount
   useEffect(() => {
     getCurrentLocation()
-    geocodeLocations();
   }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      geocodeLocations();
+    }
+  }, [isLoaded]);
 
   window.addEventListener('beforeunload', function (e) {
     // Cancel the event
@@ -604,17 +660,17 @@ const MapComponent = () => {
         zoom={10}
       >
         {currentPosition && (
-          <Marker position={currentPosition} label="You are here" />
+          <Marker position={currentPosition} label="C" icon={youAreHereIcon}/>
         )}
         {path.length > 0 && (
           <>
-            <Marker position={path[0]} label="Start" />
-            <Marker position={path[path.length - 1]} label="End" />
+            <Marker position={path[0]} label="Start" icon={startIcon}/>
+            <Marker position={path[path.length - 1]} label="End" icon={endIcon} />
             <Polyline path={path} options={{ strokeColor: "#FF0000" }} />
           </>
         )}
         {hotspotmarkers.map((marker, index) => (
-          <Marker key={index} position={{ lat: marker.lat, lng: marker.lng }} label={marker.label} />
+          <Marker key={index} position={{ lat: marker.lat, lng: marker.lng }} label={"H"} icon={locationIcon}/>
         ))}
       </GoogleMap>
       <div className='py-2 w-full border-2 border-black px-4 flex justify-between'>
