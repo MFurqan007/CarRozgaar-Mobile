@@ -393,6 +393,8 @@ const center = {
   lng: 10
 };
 
+const locations = ["F10 Markaz, Islamabad", "G9 Markaz, Islamabad", "F7 Markaz, Islamabad"];
+
 const MapComponent = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -403,10 +405,39 @@ const MapComponent = () => {
   const [startPosition, setStartPosition] = useState(null);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [path, setPath] = useState([]);
+  const [hotspotmarkers, setHotspotMarkers] = useState([]);
   const [startAddress, setStartAddress] = useState('');
   const [endAddress, setEndAddress] = useState('');
   const [watchId, setWatchId] = useState(null);
   const [showSubmit, setShowSubmit] = useState(false);
+
+  const geocodeLocations = async () => {
+    const geocoder = new window.google.maps.Geocoder();
+    const newMarkers = [];
+
+    for (const location of locations) {
+      try {
+        const { results } = await new Promise((resolve, reject) => {
+          geocoder.geocode({ address: location }, (results, status) => {
+            if (status === 'OK') {
+              resolve(results);
+            } else {
+              reject('Geocoder failed due to: ' + status);
+            }
+          });
+        });
+
+        if (results[0]) {
+          const { location } = results[0].geometry;
+          newMarkers.push({ lat: location.lat(), lng: location.lng(), label: results[0].formatted_address });
+        }
+      } catch (error) {
+        console.error('Geocoding error:', error);
+      }
+    }
+
+    setHotspotMarkers(newMarkers);
+  };
 
 
   // Convert coordinates to a place name
@@ -555,6 +586,7 @@ const MapComponent = () => {
   // Get current position once on component mount
   useEffect(() => {
     getCurrentLocation()
+    geocodeLocations();
   }, []);
 
   window.addEventListener('beforeunload', function (e) {
@@ -581,6 +613,9 @@ const MapComponent = () => {
             <Polyline path={path} options={{ strokeColor: "#FF0000" }} />
           </>
         )}
+        {hotspotmarkers.map((marker, index) => (
+          <Marker key={index} position={{ lat: marker.lat, lng: marker.lng }} label={marker.label} />
+        ))}
       </GoogleMap>
       <div className='py-2 w-full border-2 border-black px-4 flex justify-between'>
         <button className='btn bg-red-300' onClick={setStart}>Start</button>
