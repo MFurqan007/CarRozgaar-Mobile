@@ -7,6 +7,10 @@ export default function Upload() {
     const [capturing, setCapturing] = React.useState(false);
     const [recordedChunks, setRecordedChunks] = React.useState([]);
   
+    const videoConstraints = {
+        facingMode: "environment" // Use "environment" for the back camera
+    };
+
     const handleStartCaptureClick = React.useCallback(() => {
       setCapturing(true);
       mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
@@ -51,7 +55,7 @@ export default function Upload() {
     }, [recordedChunks]);
   return (
     <>
-        <Webcam audio={false} ref={webcamRef} />
+        <Webcam audio={false} ref={webcamRef} videoConstraints={videoConstraints} />
         {capturing ? (
           <button onClick={handleStopCaptureClick}>Stop Capture</button>
         ) : (
