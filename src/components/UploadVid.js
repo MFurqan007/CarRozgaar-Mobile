@@ -1,59 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useRecordWebcam } from 'react-record-webcam'
 
-export default function UploadVid({close}) {
-  const videoRef = useRef(null);
-  const [stream, setStream] = useState(null);
-  const [isStreaming, setIsStreaming] = useState(false);
+export default App = () => {
+  const { createRecording, openCamera, startRecording, stopRecording, downloadRecording } = useRecordWebcam()
 
-  // Start the video stream
-  const startVideo = async () => {
-    try {
-        const constraints = {
-            video: {
-              facingMode: "environment" // Request the back camera
-            }
-          };
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      setStream(stream);
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-      setIsStreaming(true);
-    } catch (err) {
-      console.error('Error accessing the camera', err);
-    }
+  const recordVideo = async () => {
+    const recording = await createRecording();
+    await openCamera(recording.id);
+    await startRecording(recording.id);
+    await new Promise(resolve => setTimeout(resolve, 3000)); // Record for 3 seconds
+    await stopRecording(recording.id);
+    await downloadRecording(recording.id); // Download the recording
   };
 
-  // Stop the video stream
-  const stopVideo = () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      setIsStreaming(false);
-      console.log("Close")
-      close(); 
-    }
-  };
-
-  useEffect(() => {
-    if (isStreaming) {
-      startVideo();
-    }
-
-    return () => {
-      if (stream) {
-        stopVideo();
-
-      }
-    };
-  // Ensure the effect runs when isStreaming changes
-  }, [isStreaming]);
-
-  return (
-    <div class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50">
-      <video ref={videoRef} autoPlay playsInline class="w-full h-[90%] object-cover border-2 border-[red]"/>
-      <button className='btn' onClick={() => setIsStreaming(!isStreaming)}>
-        {isStreaming ? 'Stop Video' : 'Start Video'}
-      </button>
-    </div>
-  );
-}
+  return <button onClick={recordVideo}>Record Video</button>;
+};
