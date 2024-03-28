@@ -66,7 +66,7 @@ export default function Upload() {
     
             // Store the download URL in Firestore
             await setDoc(docRef, {
-                videos: arrayUnion(videoData)
+                videos: arrayUnion(docData)
             }, { merge: true });
             alert("Download URL saved in Firestore");
         } catch (error) {
@@ -79,7 +79,7 @@ export default function Upload() {
       setCapturing(false);
     }, [mediaRecorderRef, webcamRef, setCapturing]);
 
-    const videoPreview = recordedVideo ? (
+    let videoPreview = recordedVideo ? (
         <video controls src={URL.createObjectURL(recordedVideo)} />
     ) : null;
   
@@ -109,8 +109,9 @@ export default function Upload() {
           <button onClick={handleStartCaptureClick}>Start Capture</button>
         )}
         {videoPreview}
+        <button onClick={uploadVideo}>Upload</button>
         {/* {recordedChunks.length > 0 && (
-          <button onClick={handleDownload}>Download</button>
+
         )} */}
       </>
   )
