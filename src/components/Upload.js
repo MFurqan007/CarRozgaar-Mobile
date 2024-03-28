@@ -79,9 +79,9 @@ export default function Upload() {
       setCapturing(false);
     }, [mediaRecorderRef, webcamRef, setCapturing]);
 
-    let videoPreview = recordedChunks ? (
-        <video controls src={URL.createObjectURL(recordedChunks)} />
-    ) : null;
+    // let videoPreview = recordedChunks ? (
+    //     <video controls src={URL.createObjectURL(recordedChunks)} />
+    // ) : null;
   
     // const handleDownload = React.useCallback(() => {
     //   if (recordedChunks.length) {
@@ -108,7 +108,7 @@ export default function Upload() {
         ) : (
           <button onClick={handleStartCaptureClick}>Start Capture</button>
         )}
-        {videoPreview}
+        {/* {videoPreview} */}
         <button onClick={uploadVideo}>Upload</button>
         {/* {recordedChunks.length > 0 && (
 
