@@ -12,10 +12,12 @@ import UploadVid from '@/components/UploadVid';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {db} from '../../../lib/firebase-config'
+import { useRouter} from 'next/navigation';
 // import {storage} from '../../../lib/firebase_config'
 import { collection, addDoc, query, where, getDocs, doc, getDoc  } from "firebase/firestore";
 
 function Page() {
+    const router = useRouter();
     const [userDriverData, setUserDriverData] = useState(null);
     const [userUploadVid, setUserUploadVid] = useState(true);
     const [vid, setVid] = useState(false);
@@ -90,14 +92,12 @@ function Page() {
                     
                         <div 
                             className='w-full h-auto bg-[#cccc32] p-4 rounded-[15px] flex flex-col'
-                            onClick={()=>{setVid(true)}}
+                            onClick={() => router.push('Home/UploadVid')}
                         >
                             <p className='text-[white] font-[600] text-[20px]'>{`Upload Video`}</p>
                             <p className='text-[white] font-[200] text-[18px]'>{`Upload Video to access functionality`}</p>
                         </div>
-                        {vid &&                     
-                            <UploadVid close={closeVideo}/>
-                        }
+
                     </>                 
                 }
                 <div className='w-full h-auto bg-[#F54E4E] p-4 rounded-[15px] flex flex-col'>
