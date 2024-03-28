@@ -79,8 +79,8 @@ export default function Upload() {
       setCapturing(false);
     }, [mediaRecorderRef, webcamRef, setCapturing]);
 
-    let videoPreview = recordedVideo ? (
-        <video controls src={URL.createObjectURL(recordedVideo)} />
+    let videoPreview = recordedChunks ? (
+        <video controls src={URL.createObjectURL(recordedChunks)} />
     ) : null;
   
     // const handleDownload = React.useCallback(() => {
