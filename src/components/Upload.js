@@ -36,7 +36,7 @@ export default function Upload() {
       [setRecordedChunks]
     );
 
-    const uploadVideo = async (videoBlob, uid) => {
+    const uploadVideo = async (videoBlob) => {
         const uid = localStorage.getItem('uid');
         if (!videoBlob || !uid) {
             console.log("No video to upload or UID is missing.");
