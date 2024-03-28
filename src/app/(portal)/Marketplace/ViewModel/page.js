@@ -33,21 +33,16 @@ const Model = dynamic(() => import('../../../../components/Model'), { ssr: false
 export default function ModelPage() {
   const [paths, setPaths] = useState(["/models/Mehran1.blend.glb", "/models/Mehran2.glb", "/models/Mehran3.glb"])
   const [model, setModel] = useState("/models/Mehran1.blend.glb")
+
+  const changeModel = (newModelPath) => {
+    setModel(newModelPath);
+  };
   return (
     <div className='w-[100%] h-[100vh] mt-5 flex flex-col justify-start items-center'>
-      <div className="flex gap-4">
-        <div 
-          className='btn'
-          onClick={() => setModel("/models/Mehran1.blend.glb")}
-        >1</div>
-        <div 
-          className='btn'
-          onClick={() => setModel("/models/Mehran2.glb")}
-        >1</div>
-        <div 
-          className='btn'
-          onClick={() => setModel("/models/Mehran3.glb")}
-        >1</div>
+      <div className="flex flex-wrap gap-4">
+      <button className='btn' onClick={() => changeModel("/models/Mehran1.blend.glb")}>Load Mehran1</button>
+      <button className='btn' onClick={() => changeModel("/models/Mehran2.glb")}>Load Mehran2</button>
+      <button className='btn' onClick={() => changeModel("/models/Mehran3.glb")}>Load Mehran3</button>
       </div>
       <div className='w-full h-[70vh] border-2 border-black'>
         <Canvas
