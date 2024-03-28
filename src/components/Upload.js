@@ -1,5 +1,6 @@
 import React from 'react'
-
+import Webcam from "react-webcam";
+import { useState, useRef, useCallback } from "react";
 export default function Upload() {
     const webcamRef = React.useRef(null);
     const mediaRecorderRef = React.useRef(null);
