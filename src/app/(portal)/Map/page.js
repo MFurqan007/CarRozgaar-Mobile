@@ -393,7 +393,7 @@ const center = {
   lng: 10
 };
 
-const locations = ["Pha Flats Street 97 g-11/3, Islamabad","F10 Markaz, Islamabad", "G9 Markaz, Islamabad", "F7 Markaz, Islamabad"];
+const locations = ["F11 Markaz, Islamabad","Pha Flats Street 97 g-11/3, Islamabad","F10 Markaz, Islamabad", "G9 Markaz, Islamabad", "F7 Markaz, Islamabad"];
 
 const MapComponent = () => {
   const { isLoaded } = useJsApiLoader({
