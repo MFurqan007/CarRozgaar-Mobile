@@ -32,7 +32,7 @@ const Model = dynamic(() => import('../../../../components/Model'), { ssr: false
 
 export default function ModelPage() {
   return (
-    <div className='w-[100%] h-[100vh] flex justify-center items-center'>
+    <div className='w-[100%] h-[100vh] mt-5 flex justify-start items-center'>
       <div className='w-full h-[70vh] border-2 border-black'>
         <Canvas
         >
