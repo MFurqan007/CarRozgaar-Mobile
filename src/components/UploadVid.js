@@ -1,5 +1,6 @@
 // import React, { useEffect, useRef, useState } from 'react';
 
+
 // export default function UploadVid({close}) {
 //   const videoRef = useRef(null);
 //   const [stream, setStream] = useState(null);
@@ -59,7 +60,8 @@
 // }
 
 // import { useRecordWebcam } from 'react-record-webcam'
-
+"use client"
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecordWebcam, CAMERA_STATUS } from 'react-record-webcam';
 export default function UploadVid(){
   const recordWebcam = useRecordWebcam();
