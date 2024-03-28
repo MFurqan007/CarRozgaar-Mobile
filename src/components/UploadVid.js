@@ -1,6 +1,6 @@
 import { useRecordWebcam } from 'react-record-webcam'
 
-export default App = () => {
+export default function UploadVid(){
   const { createRecording, openCamera, startRecording, stopRecording, downloadRecording } = useRecordWebcam()
 
   const recordVideo = async () => {
@@ -14,3 +14,10 @@ export default App = () => {
 
   return <button onClick={recordVideo}>Record Video</button>;
 };
+// import React from 'react'
+
+// export default function UploadVid() {
+//   return (
+//     <div>UploadVid</div>
+//   )
+// }
