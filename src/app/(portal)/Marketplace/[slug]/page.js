@@ -7,12 +7,16 @@ import CocaColaLogo from '../../../../assets/CocaColaLogo.png'
 import { TbScanEye } from "react-icons/tb";
 import { useParams } from 'next/navigation'
 
+import { useRouter} from 'next/navigation';
+
+
 import {db} from '../../../../lib/firebase-config'
 // import {storage} from '../../../lib/firebase_config'
 import { collection, addDoc, query, where, getDocs, doc, getDoc, serverTimestamp, updateDoc, arrayUnion  } from "firebase/firestore";
 
 export default function Page() {
     const params = useParams()
+    const router = useRouter();
     console.log("Params: ",params)
     const [isClicked, setIsClicked] = useState(false);
     const [campaignData, setCampaignData] = useState('');
@@ -126,7 +130,10 @@ export default function Page() {
             </div>
 
             <div className='flex justify-between items-center p-2 w-full'>
-                <div className='w-[60px] h-[40px] rounded-[10px] bg-[#5E1212] flex justify-center items-center'>
+                <div 
+                  className='w-[60px] h-[40px] rounded-[10px] bg-[#5E1212] flex justify-center items-center'
+                  onClick={() => router.push('./ViewModel')}
+                >
                     <TbScanEye className='text-[34px] text-[#F54E4E]'/>
                 </div>
                 <button 
