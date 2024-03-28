@@ -34,16 +34,20 @@ export default function ModelPage() {
   const [paths, setPaths] = useState(["/models/Mehran1.blend.glb", "/models/Mehran2.glb", "/models/Mehran3.glb"])
   const [model, setModel] = useState("/models/Mehran1.blend.glb")
   return (
-    <div className='w-[100%] h-[100vh] mt-5 flex justify-start items-center'>
-      <div className="dropdown">
-        <div tabIndex={0} role="button" className="btn m-1">Click</div>
-        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-          {
-            paths.map((path, index) => (
-              <li key={index} onChange={()=>setModel(path)}>M</li>
-            ))
-          }
-        </ul>
+    <div className='w-[100%] h-[100vh] mt-5 flex flex-col justify-start items-center'>
+      <div className="flex gap-4">
+        <div 
+          className='btn'
+          onClick={() => setModel("/models/Mehran1.blend.glb")}
+        >1</div>
+        <div 
+          className='btn'
+          onClick={() => setModel("/models/Mehran2.glb")}
+        >1</div>
+        <div 
+          className='btn'
+          onClick={() => setModel("/models/Mehran3.glb")}
+        >1</div>
       </div>
       <div className='w-full h-[70vh] border-2 border-black'>
         <Canvas
