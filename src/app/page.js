@@ -15,7 +15,7 @@ export default function Home() {
 
   return (  
     <>
-      <div className="sm:w-[425px] sm:h-[520px] border-2 border-[red] w-full h-full flex justify-center items-center">
+      <div className="sm:w-[425px] sm:h-[520px] w-full h-full flex justify-center items-center">
         <div className="w-auto h-auto flex flex-col gap-20 justify-center items-center">
           <Image
             src={Logo}

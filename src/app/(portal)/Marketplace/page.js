@@ -39,7 +39,7 @@ export default function Page() {
         </div> */}
         <div className='w-full h-auto p-2'>
             {campaigns.map((item, index) => (
-                <Link href={`/Marketplace/${item.id}`} key={index}>            
+                <Link href={`/Marketplace/${item.id}`} key={index} className='mt-2'>            
                     <MarketplaceCard data={item}/>
                 </Link>
             ))}

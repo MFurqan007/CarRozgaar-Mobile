@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 
 export default function PortalLayout({ children }) {
   return (
-    <div className="w-screen h-screen flex justify-center items-start border-4 border-[yellow]">
+    <div className="w-screen h-screen flex justify-center items-start">
       <ProtectedRoute>
         <div className="w-screen flex flex-col gap-4 mt-2">
           <Navbar/>

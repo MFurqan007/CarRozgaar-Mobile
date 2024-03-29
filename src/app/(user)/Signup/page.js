@@ -117,7 +117,7 @@ export default function Page() {
 
   return (
     <>
-    <div className="sm:w-[425px] sm:h-[520px] border-2 border-[red] py-10 w-full h-auto flex flex-col justify-start items-center gap-5">
+    <div className="sm:w-[425px] sm:h-[520px] py-10 w-full h-auto flex flex-col justify-start items-center gap-5">
         <div className=' flex flex-col items-center gap-2'>
           <Image
             src={Logo}
