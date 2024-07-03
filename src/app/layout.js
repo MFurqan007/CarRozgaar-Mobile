@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <div className="w-screen h-auto flex justify-center items-start border-2 border-black">
+        <div className="w-screen h-auto flex justify-center items-start">
           <Redux>
             {children}
           </Redux>
